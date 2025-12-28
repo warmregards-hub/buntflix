@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 
 // Video URLs
-const BUNT_VIDEO_URL = 'https://8ww34dvlu65vostd.public.blob.vercel-storage.com/buntmovie.mp4';
+const BUNT_VIDEO_URL = 'https://8ww34dvlu65vostd.public.blob.vercel-storage.com/finalbuntmovie.mp4';
 const BUNT_PREVIEW_URL = 'https://8ww34dvlu65vostd.public.blob.vercel-storage.com/buntthumb.mp4';
 const BUNT_THUMBNAIL = 'https://8ww34dvlu65vostd.public.blob.vercel-storage.com/thumb.png';
 
 // Data
 const profiles = [
-  { id: 1, name: 'Valued Bunter', avatar: 'https://8ww34dvlu65vostd.public.blob.vercel-storage.com/received_1507682280388007%20-%20Copy.jpeg' },
+  { id: 1, name: 'Guest', avatar: 'https://8ww34dvlu65vostd.public.blob.vercel-storage.com/received_1507682280388007%20-%20Copy.jpeg' },
   { id: 2, name: 'Tidyman', avatar: 'https://8ww34dvlu65vostd.public.blob.vercel-storage.com/received_510312090726219.jpeg' },
   { id: 3, name: 'Add Profile', isAdd: true },
 ];
@@ -20,7 +20,7 @@ const buntMovie = {
   ratingFull: 'Rated B - for Bunt',
   seasons: 1,
   match: 98,
-  synopsis: 'A groundbreaking docuseries following the elite feminist think-tank known globally as "The Bunt Boys". From shady busines tactics to moments of unexpected brilliance, witness the raw, unfiltered journey of the legendary yet controversial Bunt Boys.',
+  synopsis: 'A groundbreaking docuseries following the elite feminist think-tank known globally as "The Bunt Boys". From shady business tactics to moments of unexpected brilliance, witness the raw, unfiltered journey of the legendary yet controversial Bunt Boys.',
   genres: ['Docuseries', 'Reality', 'Exposé', 'Drama'],
   tags: ['Chaotic', 'Heartwarming', 'Unhinged', 'Australian'],
   cast: ['Ricky Capo', 'Neville Bunt', 'Callum Russell', 'Tax Bracket Page'],

@@ -239,7 +239,7 @@ const Hero = ({ onMoreInfo, onPlay }) => {
       {/* Video Background */}
       <video
         ref={videoRef}
-        src={BUNT_VIDEO_URL}
+        src={BUNT_PREVIEW_URL}
         autoPlay
         loop
         muted={isMuted}
@@ -347,7 +347,7 @@ const ContentRow = ({ row, profile, onCardClick }) => {
                   // Real Bunt Boys card with video thumbnail
                   <>
                     <video
-                      src={BUNT_VIDEO_URL}
+                      src={BUNT_PREVIEW_URL}
                       muted
                       style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                     />
@@ -392,7 +392,7 @@ const TitleDetail = ({ onBack, onPlay }) => (
     {/* Video Hero */}
     <div style={{ position: 'relative', width: '100%', height: '60vh', minHeight: '400px' }}>
       <video
-        src={BUNT_VIDEO_URL}
+        src={BUNT_PREVIEW_URL}
         autoPlay
         loop
         muted
@@ -476,7 +476,7 @@ const TitleDetail = ({ onBack, onPlay }) => (
             <div style={{ width: '160px', aspectRatio: '16/9', flexShrink: 0, borderRadius: '4px', overflow: 'hidden', position: 'relative' }}>
               {ep.episode === 1 ? (
                 <video
-                  src={BUNT_VIDEO_URL}
+                  src={BUNT_PREVIEW_URL}
                   muted
                   style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                 />

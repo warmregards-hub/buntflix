@@ -6,27 +6,27 @@ const BUNT_PREVIEW_URL = 'https://8ww34dvlu65vostd.public.blob.vercel-storage.co
 
 // Data
 const profiles = [
-  { id: 1, name: 'Valued Bunter', avatar: null },
-  { id: 2, name: 'Housemate 2', avatar: null },
+  { id: 1, name: 'Valued Bunter', avatar: 'https://8ww34dvlu65vostd.public.blob.vercel-storage.com/received_1507682280388007%20-%20Copy.jpeg' },
+  { id: 2, name: 'Tidyman', avatar: 'https://8ww34dvlu65vostd.public.blob.vercel-storage.com/received_510312090726219.jpeg' },
   { id: 3, name: 'Add Profile', isAdd: true },
 ];
 
 const buntBoys = {
   id: 'bunt-boys',
   title: 'Bunt Boys',
-  year: 2024,
+  year: 2025,
   rating: 'B',
   ratingFull: 'Rated B - for Bunt',
   seasons: 1,
   match: 98,
   synopsis: 'A groundbreaking docuseries following the chaotic lives of an unforgettable group of housemates. From questionable life decisions to moments of unexpected brilliance, witness the raw, unfiltered journey of the legendary Bunt Boys.',
-  genres: ['Docuseries', 'Reality', 'Comedy', 'Drama'],
+  genres: ['Docuseries', 'Reality', 'Exposé', 'Drama'],
   tags: ['Chaotic', 'Heartwarming', 'Unhinged', 'Australian'],
-  cast: ['Cast Member 1', 'Cast Member 2', 'Cast Member 3', 'Cast Member 4'],
+  cast: ['Ricky Capo', 'Neville Bunt', 'Callum Russell', 'Tax Bracket Page'],
   episodes: [
     { id: 1, episode: 1, title: 'The Beginning', synopsis: 'Meet the legendary Bunt Boys as their chaotic journey begins.', duration: '45m' },
-    { id: 2, episode: 2, title: 'Episode 2', synopsis: 'Episode 2 description placeholder.', duration: '42m' },
-    { id: 3, episode: 3, title: 'Episode 3', synopsis: 'Episode 3 description placeholder.', duration: '48m' },
+    { id: 2, episode: 2, title: 'Episode 2', synopsis: 'Meet the Bunt Boys and learn their message.', duration: '42m' },
+    { id: 3, episode: 3, title: 'Episode 3', synopsis: 'Why do they appear so shady - and is it actually as bad as it looks?', duration: '48m' },
   ],
   videoUrl: BUNT_VIDEO_URL,
 };
@@ -152,97 +152,121 @@ const BlackFade = ({ visible }) => (
   }} />
 );
 
+// Responsive padding helper - 16px on mobile, 48px on desktop
+const useResponsivePadding = () => {
+  const [padding, setPadding] = useState('16px');
+  
+  useEffect(() => {
+    const updatePadding = () => {
+      setPadding(window.innerWidth >= 768 ? '48px' : '16px');
+    };
+    updatePadding();
+    window.addEventListener('resize', updatePadding);
+    return () => window.removeEventListener('resize', updatePadding);
+  }, []);
+  
+  return padding;
+};
+
 // Profile Selection
-const ProfileSelection = ({ onSelect }) => (
-  <div style={{ minHeight: '100vh', backgroundColor: '#141414', display: 'flex', flexDirection: 'column' }}>
-    <header style={{ padding: '24px' }}><Logo size="large" /></header>
-    <main style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '-64px' }}>
-      <h1 style={{ fontSize: '3rem', color: 'white', marginBottom: '40px', fontWeight: '400' }}>Who's Bunting?</h1>
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '32px', maxWidth: '600px' }}>
-        {profiles.map((profile, idx) => (
-          <button
-            key={profile.id}
-            onClick={() => !profile.isAdd && onSelect(profile)}
-            style={{ 
-              background: 'none', 
-              border: 'none', 
-              cursor: 'pointer', 
-              display: 'flex', 
-              flexDirection: 'column', 
-              alignItems: 'center',
-              opacity: 0,
-              animation: `fadeSlideIn 0.5s ease ${idx * 0.1}s forwards`
-            }}
-          >
-            <div style={{
-              width: '140px', height: '140px', borderRadius: '4px', overflow: 'hidden',
-              background: profile.isAdd ? '#333' : 'linear-gradient(135deg, #E50914, #831010)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.boxShadow = '0 0 0 4px white'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none'; }}
+const ProfileSelection = ({ onSelect }) => {
+  const padding = useResponsivePadding();
+  
+  return (
+    <div style={{ minHeight: '100vh', backgroundColor: '#141414', display: 'flex', flexDirection: 'column' }}>
+      <header style={{ padding: `24px ${padding}` }}><Logo size="large" /></header>
+      <main style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '-64px', padding: `0 ${padding}` }}>
+        <h1 style={{ fontSize: 'clamp(2rem, 6vw, 3rem)', color: 'white', marginBottom: '40px', fontWeight: '400', textAlign: 'center' }}>Who's Bunting?</h1>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '24px', maxWidth: '600px' }}>
+          {profiles.map((profile, idx) => (
+            <button
+              key={profile.id}
+              onClick={() => !profile.isAdd && onSelect(profile)}
+              style={{ 
+                background: 'none', 
+                border: 'none', 
+                cursor: 'pointer', 
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignItems: 'center',
+                opacity: 0,
+                animation: `fadeSlideIn 0.5s ease ${idx * 0.1}s forwards`
+              }}
             >
-              {profile.isAdd ? (
-                <PlusIcon size={56} color="#808080" />
-              ) : (
-                <span style={{ fontSize: '4rem', fontWeight: 'bold', color: 'white' }}>{profile.name.charAt(0)}</span>
-              )}
-            </div>
-            <span style={{ marginTop: '12px', color: '#808080', fontSize: '16px' }}>{profile.name}</span>
-          </button>
-        ))}
-      </div>
-    </main>
-  </div>
-);
+              <div style={{
+                width: 'clamp(100px, 28vw, 140px)', height: 'clamp(100px, 28vw, 140px)', borderRadius: '4px', overflow: 'hidden',
+                background: profile.isAdd ? '#333' : 'linear-gradient(135deg, #E50914, #831010)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.boxShadow = '0 0 0 4px white'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none'; }}
+              >
+                {profile.isAdd ? (
+  <PlusIcon size={48} color="#808080" />
+) : profile.avatar ? (
+  <img src={profile.avatar} alt={profile.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+) : (
+  <span style={{ fontSize: 'clamp(2.5rem, 8vw, 4rem)', fontWeight: 'bold', color: 'white' }}>{profile.name.charAt(0)}</span>
+)}
+              </div>
+              <span style={{ marginTop: '12px', color: '#808080', fontSize: '14px' }}>{profile.name}</span>
+            </button>
+          ))}
+        </div>
+      </main>
+    </div>
+  );
+};
 
 // Navbar
-const Navbar = ({ profile, onProfileClick }) => (
-  <>
-    <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 48px', background: 'linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '40px' }}>
-        <Logo />
-        <div style={{ display: 'flex', gap: '24px', fontSize: '14px' }}>
-          <span style={{ color: 'white', fontWeight: '500', cursor: 'pointer' }}>Home</span>
-          <span style={{ color: '#B3B3B3', cursor: 'pointer' }}>Bunt TV</span>
-        </div>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-        <button onClick={onProfileClick} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', cursor: 'pointer' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '4px', background: 'linear-gradient(135deg, #E50914, #831010)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ fontSize: '14px', fontWeight: 'bold', color: 'white' }}>{profile?.name?.charAt(0) || 'V'}</span>
+const Navbar = ({ profile, onProfileClick }) => {
+  const padding = useResponsivePadding();
+  
+  return (
+    <>
+      <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: `16px ${padding}`, background: 'linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(16px, 4vw, 40px)' }}>
+          <Logo />
+          <div style={{ display: 'flex', gap: 'clamp(12px, 3vw, 24px)', fontSize: '14px' }}>
+            <span style={{ color: 'white', fontWeight: '500', cursor: 'pointer' }}>Home</span>
+            <span style={{ color: '#B3B3B3', cursor: 'pointer' }}>Bunt TV</span>
           </div>
-          <ChevronDown size={16} />
-        </button>
-      </div>
-    </nav>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+          <button onClick={onProfileClick} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', cursor: 'pointer' }}>
+            <div style={{ width: '32px', height: '32px', borderRadius: '4px', background: 'linear-gradient(135deg, #E50914, #831010)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '14px', fontWeight: 'bold', color: 'white' }}>{profile?.name?.charAt(0) || 'V'}</span>
+            </div>
+            <ChevronDown size={16} />
+          </button>
+        </div>
+      </nav>
 
-    <nav style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 100, background: '#141414', borderTop: '1px solid #333', display: 'flex', justifyContent: 'space-around', padding: '8px 0' }}>
-      {[{ Icon: HomeIcon, label: 'Home', active: true }, { Icon: SearchIcon, label: 'Search' }, { Icon: ClockIcon, label: 'Coming Soon' }, { Icon: UserIcon, label: 'My Bunt' }].map(({ Icon, label, active }, i) => (
-        <button key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', background: 'none', border: 'none', cursor: 'pointer', color: active ? 'white' : '#808080', padding: '8px 16px' }}>
-          <Icon />
-          <span style={{ fontSize: '10px' }}>{label}</span>
-        </button>
-      ))}
-    </nav>
-  </>
-);
+      <nav style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 100, background: '#141414', borderTop: '1px solid #333', display: 'flex', justifyContent: 'space-around', padding: '8px 0' }}>
+        {[{ Icon: HomeIcon, label: 'Home', active: true }, { Icon: SearchIcon, label: 'Search' }, { Icon: ClockIcon, label: 'Coming Soon' }, { Icon: UserIcon, label: 'My Bunt' }].map(({ Icon, label, active }, i) => (
+          <button key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', background: 'none', border: 'none', cursor: 'pointer', color: active ? 'white' : '#808080', padding: '8px 16px' }}>
+            <Icon />
+            <span style={{ fontSize: '10px' }}>{label}</span>
+          </button>
+        ))}
+      </nav>
+    </>
+  );
+};
 
-// Hero with video background
+// Hero with video background - NO UNMUTE BUTTON
 const Hero = ({ onMoreInfo, onPlay }) => {
-  const videoRef = useRef(null);
-  const [isMuted, setIsMuted] = useState(true);
+  const padding = useResponsivePadding();
 
   return (
     <section style={{ position: 'relative', height: '85vh', minHeight: '550px', width: '100%', overflow: 'hidden' }}>
       {/* Video Background */}
       <video
-        ref={videoRef}
         src={BUNT_PREVIEW_URL}
         autoPlay
         loop
-        muted={isMuted}
+        muted
         playsInline
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
       />
@@ -252,56 +276,48 @@ const Hero = ({ onMoreInfo, onPlay }) => {
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(20,20,20,0.95) 0%, rgba(20,20,20,0.5) 35%, transparent 60%)' }} />
 
       <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center' }}>
-        <div style={{ padding: '0 48px', paddingTop: '60px', maxWidth: '650px' }}>
+        <div style={{ padding: `0 ${padding}`, paddingTop: '60px', maxWidth: '650px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', background: '#E50914', borderRadius: '4px', padding: '2px 8px' }}>
               <span style={{ color: 'white', fontSize: '12px', fontWeight: 'bold' }}>TOP</span>
               <span style={{ color: 'white', fontSize: '22px', fontWeight: 'bold', marginLeft: '4px' }}>10</span>
             </div>
-            <span style={{ color: 'white', fontSize: '16px', fontWeight: '500' }}>#1 in Australia Today</span>
+            <span style={{ color: 'white', fontSize: 'clamp(12px, 3vw, 16px)', fontWeight: '500' }}>#1 in Australia Today</span>
           </div>
 
           {/* Thinner font weight for title */}
-          <h1 style={{ fontSize: 'clamp(3.5rem, 10vw, 6rem)', fontWeight: '600', color: 'white', marginBottom: '20px', letterSpacing: '0.05em', fontFamily: "'Bebas Neue', Arial, sans-serif", lineHeight: 0.95 }}>
+          <h1 style={{ fontSize: 'clamp(2.5rem, 10vw, 6rem)', fontWeight: '600', color: 'white', marginBottom: '20px', letterSpacing: '0.05em', fontFamily: "'Bebas Neue', Arial, sans-serif", lineHeight: 0.95 }}>
             BUNT BOYS
           </h1>
 
-          <p style={{ color: 'white', fontSize: '18px', marginBottom: '28px', lineHeight: 1.5, maxWidth: '550px', opacity: 0.9 }}>
+          <p style={{ color: 'white', fontSize: 'clamp(14px, 3vw, 18px)', marginBottom: '28px', lineHeight: 1.5, maxWidth: '550px', opacity: 0.9 }}>
             {buntBoys.synopsis}
           </p>
 
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
             <button 
               onClick={onPlay} 
-              style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'white', color: 'black', fontWeight: '600', padding: '12px 28px', borderRadius: '4px', border: 'none', cursor: 'pointer', fontSize: '18px', transition: 'background 0.2s' }}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'white', color: 'black', fontWeight: '600', padding: 'clamp(8px, 2vw, 12px) clamp(16px, 4vw, 28px)', borderRadius: '4px', border: 'none', cursor: 'pointer', fontSize: 'clamp(14px, 3vw, 18px)', transition: 'background 0.2s' }}
               onMouseEnter={(e) => e.currentTarget.style.background = '#e0e0e0'}
               onMouseLeave={(e) => e.currentTarget.style.background = 'white'}
             >
-              <PlayIcon size={26} fill color="black" />
+              <PlayIcon size={22} fill color="black" />
               Play
             </button>
             <button 
               onClick={onMoreInfo} 
-              style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(109,109,110,0.7)', color: 'white', fontWeight: '600', padding: '12px 28px', borderRadius: '4px', border: 'none', cursor: 'pointer', fontSize: '18px', transition: 'background 0.2s' }}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(109,109,110,0.7)', color: 'white', fontWeight: '600', padding: 'clamp(8px, 2vw, 12px) clamp(16px, 4vw, 28px)', borderRadius: '4px', border: 'none', cursor: 'pointer', fontSize: 'clamp(14px, 3vw, 18px)', transition: 'background 0.2s' }}
               onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(109,109,110,0.5)'}
               onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(109,109,110,0.7)'}
             >
-              <InfoIcon size={26} />
+              <InfoIcon size={22} />
               More Info
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mute toggle button */}
-      <button 
-        onClick={() => setIsMuted(!isMuted)}
-        style={{ position: 'absolute', bottom: '15%', right: '140px', width: '40px', height: '40px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.7)', background: 'rgba(0,0,0,0.5)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-      >
-        <VolumeIcon size={20} muted={isMuted} />
-      </button>
-
-      <div style={{ position: 'absolute', bottom: '15%', right: '48px', display: 'flex', alignItems: 'center', background: 'rgba(51,51,51,0.6)', borderLeft: '3px solid white', padding: '6px 16px' }}>
+      <div style={{ position: 'absolute', bottom: '15%', right: padding, display: 'flex', alignItems: 'center', background: 'rgba(51,51,51,0.6)', borderLeft: '3px solid white', padding: '6px 16px' }}>
         <span style={{ color: 'white', fontSize: '14px', fontWeight: '500' }}>{buntBoys.ratingFull}</span>
       </div>
     </section>
@@ -310,12 +326,13 @@ const Hero = ({ onMoreInfo, onPlay }) => {
 
 // Content Row - with Coming Soon placeholders and one real Bunt Boys
 const ContentRow = ({ row, profile, onCardClick }) => {
+  const padding = useResponsivePadding();
   const title = row.hasProfileName ? `${row.title} ${profile?.name || 'Valued Bunter'}` : row.title;
   const itemCount = row.isTop10 ? 10 : 6;
   
   return (
-    <section style={{ marginBottom: '40px', padding: '0 48px' }}>
-      <h2 style={{ fontSize: '22px', fontWeight: '600', color: 'white', marginBottom: '16px' }}>{title}</h2>
+    <section style={{ marginBottom: '40px', padding: `0 ${padding}` }}>
+      <h2 style={{ fontSize: 'clamp(18px, 4vw, 22px)', fontWeight: '600', color: 'white', marginBottom: '16px' }}>{title}</h2>
       <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '16px' }} className="hide-scrollbar">
         {Array(itemCount).fill(null).map((_, i) => {
           const isRealShow = i === 0; // First item is always Bunt Boys
@@ -323,7 +340,7 @@ const ContentRow = ({ row, profile, onCardClick }) => {
           return (
             <div key={i} style={{ position: 'relative', flexShrink: 0, paddingLeft: row.isTop10 ? '48px' : 0 }}>
               {row.isTop10 && (
-                <span style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', fontSize: '6rem', fontWeight: '600', color: 'transparent', WebkitTextStroke: '2px #666', lineHeight: 1, zIndex: 5, fontFamily: "'Bebas Neue', Arial, sans-serif" }}>
+                <span style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', fontSize: 'clamp(4rem, 12vw, 6rem)', fontWeight: '600', color: 'transparent', WebkitTextStroke: '2px #666', lineHeight: 1, zIndex: 5, fontFamily: "'Bebas Neue', Arial, sans-serif" }}>
                   {i + 1}
                 </span>
               )}
@@ -331,7 +348,7 @@ const ContentRow = ({ row, profile, onCardClick }) => {
                 onClick={isRealShow ? onCardClick : undefined}
                 style={{
                   position: 'relative',
-                  width: row.isOriginals ? '140px' : '180px',
+                  width: row.isOriginals ? 'clamp(100px, 30vw, 140px)' : 'clamp(140px, 40vw, 180px)',
                   aspectRatio: row.isOriginals ? '2/3' : '16/9',
                   borderRadius: '4px',
                   overflow: 'hidden',
@@ -377,131 +394,135 @@ const ContentRow = ({ row, profile, onCardClick }) => {
 };
 
 // Title Detail Page (Full Page, not modal)
-const TitleDetail = ({ onBack, onPlay }) => (
-  <div style={{ minHeight: '100vh', background: '#141414' }}>
-    {/* Back button */}
-    <button 
-      onClick={onBack}
-      style={{ position: 'fixed', top: '20px', left: '20px', zIndex: 100, background: 'rgba(0,0,0,0.5)', border: 'none', borderRadius: '50%', width: '44px', height: '44px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }}
-      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
-      onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}
-    >
-      <ArrowLeftIcon size={24} />
-    </button>
+const TitleDetail = ({ onBack, onPlay }) => {
+  const padding = useResponsivePadding();
+  
+  return (
+    <div style={{ minHeight: '100vh', background: '#141414' }}>
+      {/* Back button */}
+      <button 
+        onClick={onBack}
+        style={{ position: 'fixed', top: '20px', left: '20px', zIndex: 100, background: 'rgba(0,0,0,0.5)', border: 'none', borderRadius: '50%', width: '44px', height: '44px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }}
+        onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
+        onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}
+      >
+        <ArrowLeftIcon size={24} />
+      </button>
 
-    {/* Video Hero */}
-    <div style={{ position: 'relative', width: '100%', height: '60vh', minHeight: '400px' }}>
-      <video
-        src={BUNT_PREVIEW_URL}
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-      />
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #141414 0%, transparent 50%)' }} />
-      
-      {/* Play button overlay */}
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <button 
-          onClick={() => onPlay(1)}
-          style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(0,0,0,0.5)', border: '3px solid white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.2s, background 0.2s' }}
-          onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.background = 'rgba(0,0,0,0.7)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = 'rgba(0,0,0,0.5)'; }}
-        >
-          <PlayIcon size={36} fill />
-        </button>
-      </div>
-
-      {/* Title overlay */}
-      <div style={{ position: 'absolute', bottom: '40px', left: '48px', right: '48px' }}>
-        <h1 style={{ fontSize: '4rem', fontWeight: '600', color: 'white', marginBottom: '20px', fontFamily: "'Bebas Neue', Arial, sans-serif", letterSpacing: '0.03em' }}>BUNT BOYS</h1>
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+      {/* Video Hero */}
+      <div style={{ position: 'relative', width: '100%', height: '50vh', minHeight: '300px' }}>
+        <video
+          src={BUNT_PREVIEW_URL}
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, #141414 0%, transparent 50%)' }} />
+        
+        {/* Play button overlay */}
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <button 
             onClick={() => onPlay(1)}
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'white', color: 'black', fontWeight: '600', padding: '12px 32px', borderRadius: '4px', border: 'none', cursor: 'pointer', fontSize: '18px', transition: 'background 0.2s' }}
-            onMouseEnter={(e) => e.currentTarget.style.background = '#e0e0e0'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'white'}
+            style={{ width: '70px', height: '70px', borderRadius: '50%', background: 'rgba(0,0,0,0.5)', border: '3px solid white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.2s, background 0.2s' }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.background = 'rgba(0,0,0,0.7)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = 'rgba(0,0,0,0.5)'; }}
           >
-            <PlayIcon size={24} fill color="black" />
-            Play
-          </button>
-          <button style={{ width: '44px', height: '44px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.7)', background: 'rgba(42,42,42,0.6)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <PlusIcon size={24} />
-          </button>
-          <button style={{ width: '44px', height: '44px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.7)', background: 'rgba(42,42,42,0.6)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <ThumbsUpIcon size={22} />
+            <PlayIcon size={30} fill />
           </button>
         </div>
-      </div>
-    </div>
 
-    {/* Info Section */}
-    <div style={{ padding: '32px 48px', paddingBottom: '120px' }}>
-      <div style={{ display: 'flex', gap: '48px', flexWrap: 'wrap' }}>
-        <div style={{ flex: 1, minWidth: '300px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '20px', flexWrap: 'wrap' }}>
-            <span style={{ color: '#46d369', fontWeight: '700', fontSize: '16px' }}>{buntBoys.match}% Match</span>
-            <span style={{ color: '#bcbcbc' }}>{buntBoys.year}</span>
-            <span style={{ border: '1px solid #808080', padding: '2px 10px', fontSize: '13px', color: '#bcbcbc' }}>{buntBoys.ratingFull}</span>
-            <span style={{ color: '#bcbcbc' }}>{buntBoys.seasons} Season</span>
-            <span style={{ border: '1px solid #808080', padding: '1px 8px', fontSize: '13px', color: '#bcbcbc' }}>HD</span>
+        {/* Title overlay */}
+        <div style={{ position: 'absolute', bottom: '24px', left: padding, right: padding }}>
+          <h1 style={{ fontSize: 'clamp(2rem, 8vw, 4rem)', fontWeight: '600', color: 'white', marginBottom: '16px', fontFamily: "'Bebas Neue', Arial, sans-serif", letterSpacing: '0.03em' }}>BUNT BOYS</h1>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <button 
+              onClick={() => onPlay(1)}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'white', color: 'black', fontWeight: '600', padding: '10px 24px', borderRadius: '4px', border: 'none', cursor: 'pointer', fontSize: '16px', transition: 'background 0.2s' }}
+              onMouseEnter={(e) => e.currentTarget.style.background = '#e0e0e0'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'white'}
+            >
+              <PlayIcon size={20} fill color="black" />
+              Play
+            </button>
+            <button style={{ width: '44px', height: '44px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.7)', background: 'rgba(42,42,42,0.6)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <PlusIcon size={24} />
+            </button>
+            <button style={{ width: '44px', height: '44px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.7)', background: 'rgba(42,42,42,0.6)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <ThumbsUpIcon size={22} />
+            </button>
           </div>
-          <p style={{ color: 'white', fontSize: '16px', lineHeight: 1.7 }}>{buntBoys.synopsis}</p>
-        </div>
-        <div style={{ width: '280px', fontSize: '15px' }}>
-          <p style={{ marginBottom: '12px', lineHeight: 1.6 }}><span style={{ color: '#777' }}>Cast: </span><span style={{ color: '#ddd' }}>{buntBoys.cast.join(', ')}</span></p>
-          <p style={{ marginBottom: '12px', lineHeight: 1.6 }}><span style={{ color: '#777' }}>Genres: </span><span style={{ color: '#ddd' }}>{buntBoys.genres.join(', ')}</span></p>
-          <p style={{ lineHeight: 1.6 }}><span style={{ color: '#777' }}>This show is: </span><span style={{ color: '#ddd' }}>{buntBoys.tags.join(', ')}</span></p>
         </div>
       </div>
 
-      {/* Episodes */}
-      <div style={{ marginTop: '48px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          <h2 style={{ fontSize: '28px', fontWeight: '600', color: 'white' }}>Episodes</h2>
-          <button style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: '#242424', border: '1px solid #555', borderRadius: '4px', color: 'white', cursor: 'pointer', fontSize: '15px' }}>
-            Season 1 <ChevronDown size={18} />
-          </button>
+      {/* Info Section */}
+      <div style={{ padding: `24px ${padding}`, paddingBottom: '120px' }}>
+        <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
+          <div style={{ flex: 1, minWidth: '280px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px', flexWrap: 'wrap' }}>
+              <span style={{ color: '#46d369', fontWeight: '700', fontSize: '15px' }}>{buntBoys.match}% Match</span>
+              <span style={{ color: '#bcbcbc', fontSize: '14px' }}>{buntBoys.year}</span>
+              <span style={{ border: '1px solid #808080', padding: '2px 8px', fontSize: '12px', color: '#bcbcbc' }}>{buntBoys.ratingFull}</span>
+              <span style={{ color: '#bcbcbc', fontSize: '14px' }}>{buntBoys.seasons} Season</span>
+              <span style={{ border: '1px solid #808080', padding: '1px 6px', fontSize: '12px', color: '#bcbcbc' }}>HD</span>
+            </div>
+            <p style={{ color: 'white', fontSize: '15px', lineHeight: 1.7 }}>{buntBoys.synopsis}</p>
+          </div>
+          <div style={{ width: '260px', fontSize: '14px' }}>
+            <p style={{ marginBottom: '10px', lineHeight: 1.6 }}><span style={{ color: '#777' }}>Cast: </span><span style={{ color: '#ddd' }}>{buntBoys.cast.join(', ')}</span></p>
+            <p style={{ marginBottom: '10px', lineHeight: 1.6 }}><span style={{ color: '#777' }}>Genres: </span><span style={{ color: '#ddd' }}>{buntBoys.genres.join(', ')}</span></p>
+            <p style={{ lineHeight: 1.6 }}><span style={{ color: '#777' }}>This show is: </span><span style={{ color: '#ddd' }}>{buntBoys.tags.join(', ')}</span></p>
+          </div>
         </div>
-        {buntBoys.episodes.map((ep) => (
-          <button 
-            key={ep.id} 
-            onClick={() => onPlay(ep.episode)} 
-            style={{ width: '100%', display: 'flex', gap: '20px', padding: '20px', borderRadius: '4px', background: 'transparent', border: 'none', borderBottom: '1px solid #333', cursor: 'pointer', textAlign: 'left', transition: 'background 0.2s' }}
-            onMouseEnter={(e) => e.currentTarget.style.background = '#333'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-          >
-            <span style={{ width: '32px', color: '#808080', fontSize: '26px', fontWeight: '500', flexShrink: 0, display: 'flex', alignItems: 'center' }}>{ep.episode}</span>
-            <div style={{ width: '160px', aspectRatio: '16/9', flexShrink: 0, borderRadius: '4px', overflow: 'hidden', position: 'relative' }}>
-              {ep.episode === 1 ? (
-                <video
-                  src={BUNT_PREVIEW_URL}
-                  muted
-                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-              ) : (
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #1a1a1a, #0d0d0d)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontSize: '10px', color: '#444' }}>Coming Soon</span>
+
+        {/* Episodes */}
+        <div style={{ marginTop: '40px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <h2 style={{ fontSize: 'clamp(20px, 5vw, 28px)', fontWeight: '600', color: 'white' }}>Episodes</h2>
+            <button style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', background: '#242424', border: '1px solid #555', borderRadius: '4px', color: 'white', cursor: 'pointer', fontSize: '14px' }}>
+              Season 1 <ChevronDown size={16} />
+            </button>
+          </div>
+          {buntBoys.episodes.map((ep) => (
+            <button 
+              key={ep.id} 
+              onClick={() => onPlay(ep.episode)} 
+              style={{ width: '100%', display: 'flex', gap: '16px', padding: '16px 0', borderRadius: '4px', background: 'transparent', border: 'none', borderBottom: '1px solid #333', cursor: 'pointer', textAlign: 'left', transition: 'background 0.2s' }}
+              onMouseEnter={(e) => e.currentTarget.style.background = '#333'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+            >
+              <span style={{ width: '28px', color: '#808080', fontSize: '22px', fontWeight: '500', flexShrink: 0, display: 'flex', alignItems: 'center' }}>{ep.episode}</span>
+              <div style={{ width: 'clamp(100px, 25vw, 160px)', aspectRatio: '16/9', flexShrink: 0, borderRadius: '4px', overflow: 'hidden', position: 'relative' }}>
+                {ep.episode === 1 ? (
+                  <video
+                    src={BUNT_PREVIEW_URL}
+                    muted
+                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #1a1a1a, #0d0d0d)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontSize: '10px', color: '#444' }}>Coming Soon</span>
+                  </div>
+                )}
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.4)', opacity: 0, transition: 'opacity 0.2s' }} className="ep-play-overlay">
+                  <PlayIcon size={28} fill />
                 </div>
-              )}
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.4)', opacity: 0, transition: 'opacity 0.2s' }} className="ep-play-overlay">
-                <PlayIcon size={32} fill />
               </div>
-            </div>
-            <div style={{ flex: 1 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span style={{ color: 'white', fontWeight: '500', fontSize: '17px' }}>{ep.title}</span>
-                <span style={{ color: '#808080', fontSize: '15px' }}>{ep.duration}</span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px', gap: '8px' }}>
+                  <span style={{ color: 'white', fontWeight: '500', fontSize: '15px' }}>{ep.title}</span>
+                  <span style={{ color: '#808080', fontSize: '14px', flexShrink: 0 }}>{ep.duration}</span>
+                </div>
+                <p style={{ color: '#9a9a9a', fontSize: '13px', lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{ep.synopsis}</p>
               </div>
-              <p style={{ color: '#9a9a9a', fontSize: '15px', lineHeight: 1.5 }}>{ep.synopsis}</p>
-            </div>
-          </button>
-        ))}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Full Screen Video Player
 const VideoPlayer = ({ episode, onBack }) => {
@@ -719,20 +740,24 @@ const VideoPlayer = ({ episode, onBack }) => {
 };
 
 // Browse Page
-const Browse = ({ profile, onProfileClick, onShowDetail, onPlay }) => (
-  <div style={{ minHeight: '100vh', background: '#141414', paddingBottom: '80px' }}>
-    <Navbar profile={profile} onProfileClick={onProfileClick} />
-    <Hero onMoreInfo={onShowDetail} onPlay={onShowDetail} />
-    <div style={{ position: 'relative', zIndex: 10, marginTop: '-120px' }}>
-      {contentRows.map((row) => (
-        <ContentRow key={row.id} row={row} profile={profile} onCardClick={onShowDetail} />
-      ))}
+const Browse = ({ profile, onProfileClick, onShowDetail, onPlay }) => {
+  const padding = useResponsivePadding();
+  
+  return (
+    <div style={{ minHeight: '100vh', background: '#141414', paddingBottom: '80px' }}>
+      <Navbar profile={profile} onProfileClick={onProfileClick} />
+      <Hero onMoreInfo={onShowDetail} onPlay={onShowDetail} />
+      <div style={{ position: 'relative', zIndex: 10, marginTop: '-120px' }}>
+        {contentRows.map((row) => (
+          <ContentRow key={row.id} row={row} profile={profile} onCardClick={onShowDetail} />
+        ))}
+      </div>
+      <footer style={{ padding: `40px ${padding}`, textAlign: 'center' }}>
+        <p style={{ color: '#4a4a4a', fontSize: '12px' }}>© 2024 BUNTFLIX</p>
+      </footer>
     </div>
-    <footer style={{ padding: '40px 48px', textAlign: 'center' }}>
-      <p style={{ color: '#4a4a4a', fontSize: '12px' }}>© 2024 BUNTFLIX</p>
-    </footer>
-  </div>
-);
+  );
+};
 
 // Main App
 export default function App() {
@@ -775,7 +800,6 @@ export default function App() {
           onPlay={(ep) => setPlayingEp(ep)}
         />
       )}
-
     </>
   );
 }

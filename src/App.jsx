@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 
-// Video URL
-const BUNT_VIDEO_URL = 'https://8ww34dvlu65vostd.public.blob.vercel-storage.com/bunttrailer';
+// Video URLs
+const BUNT_VIDEO_URL = 'https://8ww34dvlu65vostd.public.blob.vercel-storage.com/buntmovie.mp4';
+const BUNT_PREVIEW_URL = 'https://8ww34dvlu65vostd.public.blob.vercel-storage.com/buntthumb.mp4';
 
 // Data
 const profiles = [
